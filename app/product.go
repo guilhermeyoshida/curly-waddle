@@ -1,16 +1,11 @@
 package app
 
+import "errors"
+
 const (
 	DISABLED = "disabled"
 	ENABLED  = "enabled"
 )
-
-type Product struct {
-	ID     string  `valid:"uuidv4"`
-	Name   string  `valid:"required"`
-	Price  float64 `valid:"float,optional"`
-	Status string  `valid:"required"`
-}
 
 type ProductInterface interface {
 	IsValid() (bool, error)
@@ -22,14 +17,24 @@ type ProductInterface interface {
 	GetPrice() float64
 }
 
+type Product struct {
+	ID     string  `valid:"uuidv4"`
+	Name   string  `valid:"required"`
+	Price  float64 `valid:"float,optional"`
+	Status string  `valid:"required"`
+}
+
 func (p *Product) IsValid() (bool, error) {
 	//TODO implement me
 	panic("implement me")
 }
 
 func (p *Product) Enable() error {
-	//TODO implement me
-	panic("implement me")
+	if p.Price > 0 {
+		p.Status = ENABLED
+		return nil
+	}
+	return errors.New("the price must be greater than zero to enable the product")
 }
 
 func (p *Product) Disable() error {
@@ -38,21 +43,17 @@ func (p *Product) Disable() error {
 }
 
 func (p *Product) GetID() string {
-	//TODO implement me
-	panic("implement me")
+	return p.ID
 }
 
 func (p *Product) GetName() string {
-	//TODO implement me
-	panic("implement me")
+	return p.Name
 }
 
 func (p *Product) GetStatus() string {
-	//TODO implement me
-	panic("implement me")
+	return p.Status
 }
 
 func (p *Product) GetPrice() float64 {
-	//TODO implement me
-	panic("implement me")
+	return p.Price
 }
