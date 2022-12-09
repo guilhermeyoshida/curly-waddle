@@ -1,6 +1,10 @@
 package app
 
-import "errors"
+import (
+	"errors"
+
+	"github.com/asaskevich/govalidator"
+)
 
 const (
 	DISABLED = "disabled"
@@ -25,8 +29,20 @@ type Product struct {
 }
 
 func (p *Product) IsValid() (bool, error) {
-	//TODO implement me
-	panic("implement me")
+	if p.Status == "" {
+		p.Status = DISABLED
+	}
+	if p.Status != ENABLED && p.Status != DISABLED {
+		return false, errors.New("the status must be enabled or disabled")
+	}
+	if p.Price < 0 {
+		return false, errors.New("the price must be greater or equal zero")
+	}
+	_, err := govalidator.ValidateStruct(p)
+	if err != nil {
+		return false, err
+	}
+	return true, nil
 }
 
 func (p *Product) Enable() error {
@@ -38,8 +54,11 @@ func (p *Product) Enable() error {
 }
 
 func (p *Product) Disable() error {
-	//TODO implement me
-	panic("implement me")
+	if p.Price == 0 {
+		p.Status = ENABLED
+		return nil
+	}
+	return errors.New("the price must be zero in order to have the product disabled")
 }
 
 func (p *Product) GetID() string {
