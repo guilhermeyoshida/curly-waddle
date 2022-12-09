@@ -1,6 +1,7 @@
-package app
+package app_test
 
 import (
+	"github.com/guilhermeyoshida/curly-waddle/app"
 	uuid "github.com/satori/go.uuid"
 	"testing"
 )
@@ -21,7 +22,7 @@ func TestProduct_Enable(t *testing.T) {
 			fields: fields{
 				Name:   "Hello",
 				Price:  10,
-				Status: DISABLED,
+				Status: app.DISABLED,
 			},
 			wantErr: false,
 		},
@@ -30,14 +31,14 @@ func TestProduct_Enable(t *testing.T) {
 			fields: fields{
 				Name:   "Hello",
 				Price:  0,
-				Status: DISABLED,
+				Status: app.DISABLED,
 			},
 			wantErr: true,
 		},
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			p := &Product{
+			p := &app.Product{
 				Name:   tt.fields.Name,
 				Price:  tt.fields.Price,
 				Status: tt.fields.Status,
@@ -66,7 +67,7 @@ func TestProduct_Disable(t *testing.T) {
 			fields: fields{
 				Name:   "Hello",
 				Price:  0,
-				Status: ENABLED,
+				Status: app.ENABLED,
 			},
 			wantErr: false,
 		},
@@ -75,14 +76,14 @@ func TestProduct_Disable(t *testing.T) {
 			fields: fields{
 				Name:   "Hello",
 				Price:  10,
-				Status: ENABLED,
+				Status: app.ENABLED,
 			},
 			wantErr: true,
 		},
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			p := &Product{
+			p := &app.Product{
 				ID:     tt.fields.ID,
 				Name:   tt.fields.Name,
 				Price:  tt.fields.Price,
@@ -114,7 +115,7 @@ func TestProduct_IsValid(t *testing.T) {
 				ID:     uuid.NewV4().String(),
 				Name:   "Hello",
 				Price:  10,
-				Status: ENABLED,
+				Status: app.ENABLED,
 			},
 			wantErr: false,
 			want:    true,
@@ -136,7 +137,7 @@ func TestProduct_IsValid(t *testing.T) {
 				ID:     uuid.NewV4().String(),
 				Name:   "Hello",
 				Price:  -10,
-				Status: ENABLED,
+				Status: app.ENABLED,
 			},
 			wantErr: true,
 			want:    false,
@@ -144,7 +145,7 @@ func TestProduct_IsValid(t *testing.T) {
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			p := &Product{
+			p := &app.Product{
 				ID:     tt.fields.ID,
 				Name:   tt.fields.Name,
 				Price:  tt.fields.Price,
